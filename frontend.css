@@ -45,7 +45,7 @@ body {
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 60px;
+  height: 5%;
 }
 
 /* Custom page CSS
@@ -67,12 +67,22 @@ body {
   margin: 0%;
 }
 
-.col-md-2{
+.col-sm-2{
   height: 100%;
   padding: 0 0px;
 }
 
-.col-md-1{
+.col-xs-2{
+  height: 100%;
+  padding: 0 0px;
+}
+
+.col-sm-1{
+  height: 100%;
+  padding: 0 0px;
+}
+
+.col-xs-1{
   height: 100%;
   padding: 0 0px;
 }
@@ -91,8 +101,8 @@ body {
 }
 
 .facebook{
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
   width: 100%;
   border-style: solid;
   border-width: 2px;
@@ -112,8 +122,8 @@ body {
 }
 
 .reddit{
-  border-top-right-radius: 5px;
-  border-top-left-radius: 5px;
+  border-top-right-radius: 20px;
+  border-top-left-radius: 20px;
   width: 100%;
   border-style: solid;
   border-width: 2px;
