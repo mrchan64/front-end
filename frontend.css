@@ -45,7 +45,7 @@ body {
   bottom: 0;
   width: 100%;
   /* Set the fixed height of the footer here */
-  height: 5%;
+  height: 1%;
 }
 
 /* Custom page CSS
@@ -92,12 +92,12 @@ body {
   position: absolute;
   bottom: 0px;
   transition-property: height;
-  transition-duration: .2s;
+  transition-duration: .1s;
   transition-timing-function: ease-in-out;
 }
 
 .upwards-expandable:hover{
-  height: 200%;
+  height: 1000%;
 }
 
 .facebook{
@@ -147,4 +147,9 @@ body {
   left: 3%;
   right: 3%;
   width: 94%;
+}
+
+.expanding-circle{
+  width: 100%;
+  margin-top: 50%;
 }
