@@ -15,6 +15,7 @@ body {
   width: 100%;
   margin: 0px;
   padding: 0px;
+  overflow: hidden;
 }
 
 .site-wrapper {
@@ -92,7 +93,7 @@ body {
   position: absolute;
   bottom: 0px;
   transition-property: height;
-  transition-duration: .1s;
+  transition-duration: .2s;
   transition-timing-function: ease-in-out;
 }
 
