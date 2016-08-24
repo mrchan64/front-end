@@ -12,8 +12,8 @@
     addListeners();
 
     function resize() {
-        var minheight = window.innerheight*1.2;
-        var minwidth = window.innerwidth*1.2;
+        var minheight = window.innerHeight*1.2;
+        var minwidth = window.innerWidth*1.2;
         var windowscale = minheight/minwidth;
         var imagescale = image.naturalHeight/image.naturalWidth;
         if(windowscale>image.scale){    //window height is bigger, align factor
