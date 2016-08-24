@@ -43,8 +43,8 @@
             posx = e.clientX + document.body.scrollLeft + document.documentElement.scrollLeft;
             posy = e.clientY + document.body.scrollTop + document.documentElement.scrollTop;
         }
-        image.style.left = parseInt(imagestart.left, 10)-(width/2-posx)/100 +'px';
-        image.style.top = parseInt(imagestart.top, 10)-(height/2-posy)/100 + 'px';
+        image.style.left = parseInt(imagestart.left, 10)+(width/2-posx)/100 +'px';
+        image.style.top = parseInt(imagestart.top, 10)+(height/2-posy)/100 + 'px';
         }
 
 })();
