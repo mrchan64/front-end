@@ -122,6 +122,11 @@ body {
   filter: alpha(opacity = 20);
 }
 
+.livefb{
+  height: 100%;
+  width:100%;
+}
+
 .reddit{
   border-top-right-radius: 20px;
   border-top-left-radius: 20px;
@@ -150,10 +155,11 @@ body {
   width: 94%;
 }
 
+.expanding-circle-box{
+  pointer-events: none;
+}
+
 .expanding-circle{
   position: absolute;
-  top: -100px;
-  width: 100px;
-  height: 100px;
   border-radius: 100%;
 }
