@@ -10,6 +10,7 @@
         menuItems.each(function(){
             var circbox = $(this).find('.expanding-circle-box')[0]
             var tab = $(this).children()[0]
+            console.log($(tab))
             $(tab).on('mouseenter', function(){
                 $(circbox).stop()
                 var high = $(circbox).data("high");
