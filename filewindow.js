@@ -6,9 +6,7 @@
 	var width = $(window).innerWidth();
 	var lastStaticMove = {x:0, y:0};
 	var generator = {x:10, y:10};
-	if(!('ontouchstart' in window)) {
-        window.addEventListener('mousemove', mouseMove);
-    }
+    window.addEventListener('mousemove', mouseMove);
 	newWinHTML()
 
     window.addEventListener('resize', resize);
