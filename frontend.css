@@ -92,6 +92,17 @@ body {
   padding: 0 0px;
 }
 
+.col-sm-12{
+  padding: 0 0px;
+}
+
+.col-xs-12{
+  padding: 0 0px;
+}
+
+.button-distr-window{
+}
+
 .upwards-expandable{
   height: 100%;
   position: absolute;
