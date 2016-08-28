@@ -186,3 +186,62 @@ body {
 }
 
 
+/* Custom button crap */
+
+.btn-default {
+  color: #eee;
+  background-color: #555555;
+  border-color: #333333;
+}
+.btn-default:focus,
+.btn-default.focus {
+  color: #eee;
+  background-color: #333333;
+  border-color: #8c8c8c;
+}
+.btn-default:hover {
+  color: #eee;
+  background-color: #333333;
+  border-color: #000;
+}
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+  color: #fff;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.btn-default:active:hover,
+.btn-default.active:hover,
+.open > .dropdown-toggle.btn-default:hover,
+.btn-default:active:focus,
+.btn-default.active:focus,
+.open > .dropdown-toggle.btn-default:focus,
+.btn-default:active.focus,
+.btn-default.active.focus,
+.open > .dropdown-toggle.btn-default.focus {
+  color: #eee;
+  background-color: #2f2f2f;
+  border-color: #000;
+}
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+  background-image: none;
+}
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover,
+fieldset[disabled] .btn-default:hover,
+.btn-default.disabled:focus,
+.btn-default[disabled]:focus,
+fieldset[disabled] .btn-default:focus,
+.btn-default.disabled.focus,
+.btn-default[disabled].focus,
+fieldset[disabled] .btn-default.focus {
+  background-color: #333333;
+  border-color: #ccc;
+}
+.btn-default .badge {
+  color: #000;
+  background-color: #fff;
+}

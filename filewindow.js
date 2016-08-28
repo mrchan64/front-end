@@ -6,10 +6,21 @@
 	var width = $(window).innerWidth();
 	var lastStaticMove = {x:0, y:0};
 	var generator = {x:10, y:10};
+	initialize();
+	resize();
     window.addEventListener('mousemove', mouseMove);
-	newWinHTML()
+	//newWinHTML()
 
     window.addEventListener('resize', resize);
+
+    function initialize(){
+    	$('.control-button-image').each(function(){
+    		var norm = $(this).parent().height() * .5
+    		$(this).css({width: norm});
+    	});
+    	$('#new-window-button').on('click', newWinHTML);
+    	$('#reset-windows-button').on('click', resetAll);
+    }
 
 	function mouseMove(event){
 		$(activeWindows).each(function(){
@@ -24,13 +35,14 @@
 	}
 
 	function moveClicked(event) {
-		console.log('clicked');
 		var encapsBox = $(this).parent().parent().parent().parent().parent();
 		$(encapsBox).data('moving',true);
 		var pos = $(encapsBox).position()
+		if(!$(encapsBox).hasClass('window-placeable')){
+ 			return;
+ 		}
 		var top = pos.top;
 		var left = pos.left;
-		console.log(top,left);
 		$(encapsBox).data("lasttop",top);
 		$(encapsBox).data("lastleft",left);
 		lastStaticMove.x = event.screenX;
@@ -38,7 +50,6 @@
 	}
 
 	function moveReleased(event) {
-		console.log('released');
 		var encapsBox = $(this).parent().parent().parent().parent().parent();
 		$(encapsBox).data('moving',false);
 	}
@@ -96,9 +107,14 @@
 
 		$(moveButt).on('mouseup', moveReleased);
 		$(moveButt).on('mousedown', moveClicked);
-		console.log('set');
 		update();
+		generator.x+=10;
+		generator.y+=10;
 
+	}
+
+	function resetAll(){
+		$(winWrapper).empty();
 	}
 
 	function update() {
@@ -106,7 +122,10 @@
 	}
 
     function resize(){
-
+        var control = $('#control-buttons');
+        var controlLeft = height * .01;
+        var controlMid = (height - control.height()) / 2;
+        control.css({top: controlMid, left: controlLeft})
     }
 
 })();

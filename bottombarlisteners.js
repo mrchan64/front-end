@@ -1,6 +1,8 @@
 (function() {
 
     var menuItems = $('.bottom-bar-element');
+    var width = $(this).innerWidth();
+    var height = $(this).innerHeight();
     resize();
     initstuff();
     window.addEventListener('resize', resize);
@@ -38,8 +40,8 @@
 
     function resize(){
         menuItems.each(function(){
-            var width = $(this).innerWidth();
-            var height = $(this).innerHeight();
+            width = $(this).innerWidth();
+            height = $(this).innerHeight();
             $(this).find('.expanding-circle-box').each(function(){
                 $(this).width(width/2).height(width/2);
                 $(this).css({top: -width/8, left: width/4, position: 'absolute'})

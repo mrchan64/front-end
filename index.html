@@ -34,6 +34,16 @@
   <body>
     <div class="site-wrapper">
       <img id="image-background" src="assets/wallpapers/backgroundimage.jpg" class="site-background">
+
+      <div id="control-buttons" class="btn-group-vertical">
+        <button id="new-window-button" type="button" class="btn btn-default btn-lg">
+          <img class="control-button-image" src="assets/ic_folder_black_24dp/web/folder-light-gray.png">
+        </button>
+        <button id="reset-windows-button" type="button" class="btn btn-default btn-lg">
+          <img class="control-button-image" src="assets/ic_layers_clear_black_24dp/web/reset-windows.png">
+        </button>
+      </div>
+
       <div id="explorer-windows"></div>
     </div>
 
@@ -68,7 +78,6 @@
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
     <script>window.jQuery || document.write('<script src="node_modules/jquery/test/jquery.js"><\/script>')</script>
     <script src="background.js"></script>
     <script src="bottombarlisteners.js"></script>
