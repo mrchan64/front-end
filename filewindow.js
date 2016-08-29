@@ -109,19 +109,54 @@
 		$(buttonGroup).css({position: 'absolute', top: -9999, bottom: -9999, margin: 'auto', left: 0, height: $(buttonGroup).height()});
 
 		var standInterval = $(buttonGroup).width();
-		var baseButt = $('<button type="button" class="btn-lg btn-circle btn-default">HI</button>');
+		var baseButt = $('<button type="button" class="btn btn-lg btn-circle btn-default">HI</button>');
 		$(baseButt).css({top: -100, bottom: -100, margin: 'auto', left: standInterval * 1.25, position: 'absolute'});
 		$(encaps).append(baseButt);
+		$(baseButt).data("directory", "/");
+		$(baseButt).data("standInterval", standInterval);
 
 		$(moveButt).on('mouseup', moveReleased);
 		$(moveButt).on('mousedown', moveClicked);
 		$(delButt).on('mousedown', deleteWin);
+		$(baseButt).on('mousedown', createChild)
 
 		//$(encaps).children().css('pointer-events', 'all');
 		update();
 		generator.x+=10;
 		generator.y+=10;
 
+	}
+
+	function createChild(){
+		var fileDir = $(this).data("directory");
+
+		var parent = $(this).parent();
+
+		var standInterval = $(this).data("standInterval");
+
+		var origin = $(this).position().left;
+
+		//code for retrieving child files
+		var children = [
+		"hola",
+		"hole",
+		"holi",
+		"holo",
+		"hulo"
+		];
+
+		var display = $('<div class="folder-window"></div>');
+		$(children).each(function(){
+			var htmlStr = '<button type="button" class="btn btn-file btn-default">'+this+'</button>';
+			var htmlObj = $(htmlStr);
+			$(htmlObj).data("directory", fileDir+'/'+this);
+			$(display).append(htmlObj);
+			$(htmlObj).css({margin: 1})
+		});
+		$(parent).append(display);
+		var divHeight = (32)*children.length+2;
+		var divWidth = 150*1.2;
+		$(display).css({height: divHeight, width: divWidth, top: -divHeight/2, left: origin+standInterval*1.05, position: 'absolute'});
 	}
 
 	function resetAll(){

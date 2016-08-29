@@ -183,6 +183,12 @@ body {
 .window-placeable{
 }
 
+.folder-window{
+  border-width: 1px;
+  border-style: solid;
+  border-color: #00ff00;
+}
+
 
 /* Custom button crap */
 
@@ -268,4 +274,14 @@ fieldset[disabled] .btn-default.focus {
   font-size: 24px;
   line-height: 1.33;
   border-radius: 35px;
+}
+
+.btn-file {
+  height: 30px;
+  width: 150px;
+  text-align: center;
+  padding: 6px 6px;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 0px;
 }
