@@ -24,6 +24,7 @@ body {
   height: 100%; /* For at least Firefox */
   min-height: 100%;
   overflow: hidden;
+  background-color: #000;
 }
 
 .site-background {
@@ -36,8 +37,8 @@ body {
   height: auto;
   min-height: 120%;
   min-width: 120%;
-  opacity: 0.5;
-  filter: alpha(opacity = 50);
+  opacity: 0.7;
+  filter: alpha(opacity = 70);
   margin: auto;
 }
 
@@ -180,9 +181,6 @@ body {
 }
 
 .window-placeable{
-  border-style: solid;
-  border-width: 2px;
-  border-color: #000000;
 }
 
 
@@ -242,6 +240,32 @@ fieldset[disabled] .btn-default.focus {
   border-color: #ccc;
 }
 .btn-default .badge {
-  color: #000;
+  color: #fff;
   background-color: #fff;
+}
+
+.btn-circle {
+  width: 30px;
+  height: 30px;
+  text-align: center;
+  padding: 6px 0;
+  font-size: 12px;
+  line-height: 1.428571429;
+  border-radius: 15px;
+}
+.btn-circle.btn-lg {
+  width: 50px;
+  height: 50px;
+  padding: 10px 16px;
+  font-size: 18px;
+  line-height: 1.33;
+  border-radius: 25px;
+}
+.btn-circle.btn-xl {
+  width: 70px;
+  height: 70px;
+  padding: 10px 16px;
+  font-size: 24px;
+  line-height: 1.33;
+  border-radius: 35px;
 }

@@ -5,7 +5,7 @@
 	var height = $(window).innerHeight();
 	var width = $(window).innerWidth();
 	var lastStaticMove = {x:0, y:0};
-	var generator = {x:10, y:10};
+	var generator = {x:width/2, y:height/2};
 	initialize();
 	resize();
     window.addEventListener('mousemove', mouseMove);
@@ -36,7 +36,7 @@
 	}
 
 	function moveClicked(event) {
-		var encapsBox = $(this).parent().parent().parent().parent().parent();
+		var encapsBox = $(this).parent().parent().parent();
 		$(encapsBox).data('moving',true);
 		var pos = $(encapsBox).position()
 		if(!$(encapsBox).hasClass('window-placeable')){
@@ -51,63 +51,73 @@
 	}
 
 	function moveReleased(event) {
-		var encapsBox = $(this).parent().parent().parent().parent().parent();
+		var encapsBox = $(this).parent().parent().parent();
+		if(!$(encapsBox).hasClass('window-placeable')){
+ 			return;
+ 		}
 		$(encapsBox).data('moving',false);
+	}
+
+	function deleteWin(event){
+		var encapsBox = $(this).parent().parent().parent();
+		if(!$(encapsBox).hasClass('window-placeable')){
+ 			return;
+ 		}
+ 		$(encapsBox).remove();
 	}
 
 	function newWinHTML(){
 		var encaps = $('<div class="window-placeable"></div>');
-		$(encaps).css({height: height*.4, width: height*.6, top: generator.y, left: generator.x, position: 'absolute'});
+		$(encaps).css({top: generator.y, left: generator.x, position: 'absolute'});
 
-		var row = $('<div class="row"></div>');
-		$(encaps).append(row);
+		var winButts = $('<div></div>');
+		$(winButts).css({height: '100%', width: 2, left: 0, position: 'absolute'});
+		$(encaps).append(winButts);
 
-		var screenPanel = $('<div class="col-sm-11 col-xs-11 "></div>');
-		var buttGrid = $('<div class="col-sm-1 col-xs-1 "></div>');
-		$(row).append(screenPanel);
-		$(row).append(buttGrid);
+		var buttonGroup = $('<div class="btn-group-vertical"></div>');
 
-		var buttGridRow = $('<div class="row"></div>');
-		$(buttGrid).append(buttGridRow);
+		var widthNorm = $(this).parent().width()*.4;
 
-		var buttGridInner = [
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'),
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>'), 
-			$('<div class="col-sm-12 col-xs-12 button-distr-window"></div>')
-		]
-		for(var i = 0; i < buttGridInner.length; i++){
-			$(buttGridRow).append(buttGridInner[i]);
-			var fromTop = i*(100/buttGridInner.length)+'%';
-			var interval = (100/buttGridInner.length)+'%'
-			$(buttGridInner[i]).css({position: 'absolute', top: fromTop, height: interval});
-		}
+		/* DELETE BUTTON */
+		var delButt = $('<button type="button" class="btn btn-default del-button"></button>');
 
+		$(buttonGroup).append(delButt);
+
+		var delButtImg = $('<img src="assets/ic_cancel_black_24dp/web/delete.png">');
+		$(delButtImg).css({width:widthNorm})
+		$(delButtImg).css('pointer-events', 'none');
+
+		$(delButt).append(delButtImg);
+		/* END DELETE BUTTON */
+
+		/* MOVEMENT BUTTON */
+		var moveButt = $('<button type="button" class="btn btn-default move-button"></button>');
+
+		$(buttonGroup).append(moveButt);
+
+		var moveButtImg = $('<img src="assets/ic_zoom_out_map_black_24dp/web/move.png">');
+		$(moveButtImg).css({width:widthNorm})
+		$(moveButtImg).css('pointer-events', 'none');
+
+		$(moveButt).append(moveButtImg);
+		/* END MOVEMENT BUTTON */
+
+		$(winButts).append(buttonGroup);
+		
 		$(winWrapper).append(encaps);
 
-		var moveButt = $('<img src="assets/ic_zoom_out_map_black_24dp/web/ic_zoom_out_map_black_24dp_2x.png" class="move-button">');
-		var autoHeight = $(buttGridInner[0]).height()*.9;
-		$(moveButt).css({height: autoHeight, width: autoHeight, position: 'absolute', top: -9999, right: -9999, bottom: -9999, left: -9999, margin: 'auto'});
-		$(buttGridInner[10]).append(moveButt);
+		$(buttonGroup).css({position: 'absolute', top: -9999, bottom: -9999, margin: 'auto', left: 0, height: $(buttonGroup).height()});
+
+		var standInterval = $(buttonGroup).width();
+		var baseButt = $('<button type="button" class="btn-lg btn-circle btn-default">HI</button>');
+		$(baseButt).css({top: -100, bottom: -100, margin: 'auto', left: standInterval * 1.25, position: 'absolute'});
+		$(encaps).append(baseButt);
 
 		$(moveButt).on('mouseup', moveReleased);
 		$(moveButt).on('mousedown', moveClicked);
+		$(delButt).on('mousedown', deleteWin);
+
+		//$(encaps).children().css('pointer-events', 'all');
 		update();
 		generator.x+=10;
 		generator.y+=10;
@@ -131,6 +141,7 @@
         var controlLeft = height * .01;
         var controlMid = (height - control.height()) / 2;
         control.css({top: controlMid, left: controlLeft})
+        //var 
     }
 
 
