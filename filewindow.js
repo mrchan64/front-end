@@ -20,6 +20,7 @@
     	});
     	$('#new-window-button').on('click', newWinHTML);
     	$('#reset-windows-button').on('click', resetAll);
+    	$('#lock-windows-button').on('click', lockWindows);
     }
 
 	function mouseMove(event){
@@ -117,6 +118,10 @@
 		$(winWrapper).empty();
 	}
 
+	function lockWindows(){
+		//add code
+	}
+
 	function update() {
 		activeWindows = $('.window-placeable');
 	}
@@ -127,5 +132,6 @@
         var controlMid = (height - control.height()) / 2;
         control.css({top: controlMid, left: controlLeft})
     }
+
 
 })();

@@ -196,8 +196,8 @@ body {
 .btn-default:focus,
 .btn-default.focus {
   color: #eee;
-  background-color: #333333;
-  border-color: #8c8c8c;
+  background-color: #555555;
+  border-color: #333333;
 }
 .btn-default:hover {
   color: #eee;
