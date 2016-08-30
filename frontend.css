@@ -190,10 +190,8 @@ body {
 .folder-window{/*
   border-width: 1px;
   border-style: solid;
-  border-color: #00ff00;*/
-}
-
-.fade{
+  border-color: #00ff00;
+  -webkit-clip-path: polygon(0px 100px, 100px 0px, 0px 0px);*/
 }
 
 .file-triangle{

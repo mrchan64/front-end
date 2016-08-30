@@ -184,6 +184,18 @@
 			$(line).css({height: '100%', width: 2, float: "left"});
 			$(line).css('background-color', '#eee');
 			$(buttonScroll).append(line);
+			var divHeight = (32)*children.length-2;
+			var divWidth = 150+12.99+2+3;
+			var offsetLeft = standInterval * 2.35;
+			var tempoffs = divHeight;
+			var ditMarg = 0;
+			if(divHeight > 300){
+				console.log("hi");
+				tempoffs = 300;
+				$(line).css('margin-top', 30);
+				ditMarg = 30;
+				$(buttonScroll).css("-webkit-mask-image", "linear-gradient(transparent 0%, black 10%, black 90%, transparent 100%)");
+			}
 			var counter = 0;
 			$(children).each(function(){
 				var htmlStr = '<button type="button" class="btn btn-file btn-default-2">'+this+'</button>';
@@ -193,23 +205,16 @@
 				$(buttonScroll).append(htmlObj);
 				$(htmlObj).css({margin: 1, float: 'right'});
 				if(counter == 0){
-					$(htmlObj).css("margin-top", 0);
+					$(htmlObj).css("margin-top", ditMarg);
 				}
 				if(counter == children.length-1){
-					$(htmlObj).css("margin-bottom", 0);
+					$(htmlObj).css("margin-bottom", ditMarg);
 				}
 				counter++;
 				//attach listeners
 				htmlObj.on('click', createChild);
 			});
 			$(parent).append(display);
-			var divHeight = (32)*children.length-2;
-			var divWidth = 150+12.99+2+3;
-			var offsetLeft = standInterval * 2.35;
-			var tempoffs = divHeight;
-			if(divHeight > 300){
-				tempoffs = 300;
-			}
 			var offsetTop = -tempoffs/2;
 			if($(this).hasClass('btn-file')){
 				offsetLeft = standInterval * 3.45;
@@ -221,7 +226,6 @@
 			$(line).css({height: divHeight});
 			$(display).css({height: tempoffs, width: divWidth, top: offsetTop, left: offsetLeft, position: 'absolute'});
 			$(buttonScroll).css({height: tempoffs, width: divWidth-12, float: 'right', overflow: 'scroll'});
-
 
 			$(this).data("childScreen", display);
 			$(this).data("open", true);
