@@ -109,7 +109,7 @@
 		$(buttonGroup).css({position: 'absolute', top: -9999, bottom: -9999, margin: 'auto', left: 0, height: $(buttonGroup).height()});
 
 		var standInterval = $(buttonGroup).width();
-		var baseButt = $('<button type="button" class="btn btn-lg btn-circle btn-default">HI</button>');
+		var baseButt = $('<button type="button" class="btn btn-lg btn-circle btn-default"></button>');
 		$(baseButt).css({top: -100, bottom: -100, margin: 'auto', left: standInterval * 1.25, position: 'absolute'});
 		$(encaps).append(baseButt);
 		$(baseButt).data("directory", "/");
@@ -118,8 +118,8 @@
 
 		$(moveButt).on('mouseup', moveReleased);
 		$(moveButt).on('mousedown', moveClicked);
-		$(delButt).on('mousedown', deleteWin);
-		$(baseButt).on('mousedown', createChild)
+		$(delButt).on('click', deleteWin);
+		$(baseButt).on('click', createChild)
 
 		//$(encaps).children().css('pointer-events', 'all');
 		update();
@@ -129,22 +129,40 @@
 	}
 
 	function createChild(){
+		var parent = $(this).parent();
+
+		if($(this).hasClass('btn-file')){
+			parent = $(this).parent().parent();
+		}
+
 		if($(this).data("open")){
 			var tbDeleted = $(this).data("childScreen");
 			$(tbDeleted).remove();
 			$(this).data("childScreen", null);
 			$(this).data("open", false);
 		} else {
-			var fileDir = $(this).data("directory");
+			if($(parent).data("active")!=null){
+				console.log("T");
+				createChild.call($(parent).data("active"));
+				console.log($(parent).data("active"));
+			}
 
-			var parent = $(this).parent();
+			var fileDir = $(this).data("directory");
 
 			var standInterval = $(this).data("standInterval");
 
-			var origin = $(this).position().left;
-
 			//code for retrieving child files
 			var children = [
+			"hola",
+			"hole",
+			"holi",
+			"holo",
+			"hulo",
+			"hola",
+			"hole",
+			"holi",
+			"holo",
+			"hulo",
 			"hola",
 			"hole",
 			"holi",
@@ -160,25 +178,65 @@
 			$(caret).css("margin-bottom", "auto");
 			$(caret).css("margin-left", 0);
 			$(caret).css("margin-right", 0);
+			var buttonScroll = $('<div></div');
+			$(display).append(buttonScroll);
 			var line = $('<div></div>');
-			$(line).css({left: 12.99, height: '100%', width: 2, position: 'absolute'});
+			$(line).css({height: '100%', width: 2, float: "left"});
 			$(line).css('background-color', '#eee');
-			$(display).append(line);
+			$(buttonScroll).append(line);
+			var counter = 0;
 			$(children).each(function(){
 				var htmlStr = '<button type="button" class="btn btn-file btn-default-2">'+this+'</button>';
 				var htmlObj = $(htmlStr);
 				$(htmlObj).data("directory", fileDir+'/'+this);
-				$(display).append(htmlObj);
+				$(htmlObj).data("standInterval", standInterval);
+				$(buttonScroll).append(htmlObj);
 				$(htmlObj).css({margin: 1, float: 'right'});
+				if(counter == 0){
+					$(htmlObj).css("margin-top", 0);
+				}
+				if(counter == children.length-1){
+					$(htmlObj).css("margin-bottom", 0);
+				}
+				counter++;
 				//attach listeners
+				htmlObj.on('click', createChild);
 			});
 			$(parent).append(display);
-			var divHeight = (32)*children.length+2;
-			var divWidth = 150+12.99+2+4;
-			$(display).css({height: divHeight, width: divWidth, top: -divHeight/2, left: origin+standInterval*1.05, position: 'absolute'});
+			var divHeight = (32)*children.length-2;
+			var divWidth = 150+12.99+2+3;
+			var offsetLeft = standInterval * 2.35;
+			var tempoffs = divHeight;
+			if(divHeight > 300){
+				tempoffs = 300;
+			}
+			var offsetTop = -tempoffs/2;
+			if($(this).hasClass('btn-file')){
+				offsetLeft = standInterval * 3.45;
+				var approx = $(this).parent().parent().offset().top - $(this).offset().top;
+				console.log(approx);
+				offsetTop = -tempoffs/2-approx+15;
+			}
+
+			$(line).css({height: divHeight});
+			$(display).css({height: tempoffs, width: divWidth, top: offsetTop, left: offsetLeft, position: 'absolute'});
+			$(buttonScroll).css({height: tempoffs, width: divWidth-12, float: 'right', overflow: 'scroll'});
+
 
 			$(this).data("childScreen", display);
 			$(this).data("open", true);
+		}
+
+		if($(this).hasClass('btn-default-2')){
+			$(this).removeClass('btn-default-2');
+			$(this).addClass('btn-default-2a');
+			$(parent).data("active", $(this));
+		}else{
+			if($(this).hasClass('btn-default-2a')){
+				$(this).removeClass('btn-default-2a');
+				$(this).addClass('btn-default-2');
+				$(parent).data("active", null);
+			}
 		}
 	}
 
