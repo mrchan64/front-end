@@ -152,23 +152,12 @@
 			var standInterval = $(this).data("standInterval");
 
 			//code for retrieving child files
-			var children = [
-			"hola",
-			"hole",
-			"holi",
-			"holo",
-			"hulo",
-			"hola",
-			"hole",
-			"holi",
-			"holo",
-			"hulo",
-			"hola",
-			"hole",
-			"holi",
-			"holo",
-			"hulo"
-			];
+			var children = [];
+			$.get("http://localhost:3000/children", function(data, status){
+				console.log(data["hi"]);
+				children = data["hi"];
+			});
+			console.log(children);
 
 			var display = $('<div class="folder-window"></div>');
 			var caret = $('<div class="file-triangle"></div>');
