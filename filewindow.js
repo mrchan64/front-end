@@ -114,6 +114,7 @@
 		$(encaps).append(baseButt);
 		$(baseButt).data("directory", "/");
 		$(baseButt).data("standInterval", standInterval);
+		$(baseButt).data("open", false);
 
 		$(moveButt).on('mouseup', moveReleased);
 		$(moveButt).on('mousedown', moveClicked);
@@ -128,35 +129,57 @@
 	}
 
 	function createChild(){
-		var fileDir = $(this).data("directory");
+		if($(this).data("open")){
+			var tbDeleted = $(this).data("childScreen");
+			$(tbDeleted).remove();
+			$(this).data("childScreen", null);
+			$(this).data("open", false);
+		} else {
+			var fileDir = $(this).data("directory");
 
-		var parent = $(this).parent();
+			var parent = $(this).parent();
 
-		var standInterval = $(this).data("standInterval");
+			var standInterval = $(this).data("standInterval");
 
-		var origin = $(this).position().left;
+			var origin = $(this).position().left;
 
-		//code for retrieving child files
-		var children = [
-		"hola",
-		"hole",
-		"holi",
-		"holo",
-		"hulo"
-		];
+			//code for retrieving child files
+			var children = [
+			"hola",
+			"hole",
+			"holi",
+			"holo",
+			"hulo"
+			];
 
-		var display = $('<div class="folder-window"></div>');
-		$(children).each(function(){
-			var htmlStr = '<button type="button" class="btn btn-file btn-default">'+this+'</button>';
-			var htmlObj = $(htmlStr);
-			$(htmlObj).data("directory", fileDir+'/'+this);
-			$(display).append(htmlObj);
-			$(htmlObj).css({margin: 1})
-		});
-		$(parent).append(display);
-		var divHeight = (32)*children.length+2;
-		var divWidth = 150*1.2;
-		$(display).css({height: divHeight, width: divWidth, top: -divHeight/2, left: origin+standInterval*1.05, position: 'absolute'});
+			var display = $('<div class="folder-window"></div>');
+			var caret = $('<div class="file-triangle"></div>');
+			$(display).append(caret);
+			$(caret).css({top: -9999, bottom: -9999, position: 'absolute'})
+			$(caret).css("margin-top", "auto");
+			$(caret).css("margin-bottom", "auto");
+			$(caret).css("margin-left", 0);
+			$(caret).css("margin-right", 0);
+			var line = $('<div></div>');
+			$(line).css({left: 12.99, height: '100%', width: 2, position: 'absolute'});
+			$(line).css('background-color', '#eee');
+			$(display).append(line);
+			$(children).each(function(){
+				var htmlStr = '<button type="button" class="btn btn-file btn-default-2">'+this+'</button>';
+				var htmlObj = $(htmlStr);
+				$(htmlObj).data("directory", fileDir+'/'+this);
+				$(display).append(htmlObj);
+				$(htmlObj).css({margin: 1, float: 'right'});
+				//attach listeners
+			});
+			$(parent).append(display);
+			var divHeight = (32)*children.length+2;
+			var divWidth = 150+12.99+2+4;
+			$(display).css({height: divHeight, width: divWidth, top: -divHeight/2, left: origin+standInterval*1.05, position: 'absolute'});
+
+			$(this).data("childScreen", display);
+			$(this).data("open", true);
+		}
 	}
 
 	function resetAll(){

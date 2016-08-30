@@ -183,10 +183,19 @@ body {
 .window-placeable{
 }
 
-.folder-window{
+.folder-window{/*
   border-width: 1px;
   border-style: solid;
-  border-color: #00ff00;
+  border-color: #00ff00;*/
+}
+
+.file-triangle{
+  border-left: 0px;
+  border-bottom: 7.5px solid transparent;
+  border-right: 12.99px solid #eee;
+  border-top: 7.5px solid transparent;
+  width: 0;
+  height: 0;
 }
 
 
@@ -250,6 +259,66 @@ fieldset[disabled] .btn-default.focus {
   background-color: #fff;
 }
 
+/* File Window Button */
+.btn-default-2 {
+  color: #555555;
+  background-color: #eee;
+  border-color: #ddd;
+}
+.btn-default-2:focus,
+.btn-default-2.focus {
+  color: #555555;
+  background-color: #eee;
+  border-color: #ddd;
+}
+.btn-default-2:hover {
+  color: #555555;
+  background-color: #ccc;
+  border-color: #bbb;
+}
+.btn-default-2:active,
+.btn-default-2.active,
+.open > .dropdown-toggle.btn-default-2 {
+  color: #fff;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.btn-default-2:active:hover,
+.btn-default-2.active:hover,
+.open > .dropdown-toggle.btn-default-2:hover,
+.btn-default-2:active:focus,
+.btn-default-2.active:focus,
+.open > .dropdown-toggle.btn-default-2:focus,
+.btn-default-2:active.focus,
+.btn-default-2.active.focus,
+.open > .dropdown-toggle.btn-default-2.focus {
+  color: #555555;
+  background-color: #aaa;
+  border-color: #999;
+}
+.btn-default-2:active,
+.btn-default-2.active,
+.open > .dropdown-toggle.btn-default-2 {
+  background-image: none;
+}
+.btn-default-2.disabled:hover,
+.btn-default-2[disabled]:hover,
+fieldset[disabled] .btn-default-2:hover,
+.btn-default-2.disabled:focus,
+.btn-default-2[disabled]:focus,
+fieldset[disabled] .btn-default-2:focus,
+.btn-default-2.disabled.focus,
+.btn-default-2[disabled].focus,
+fieldset[disabled] .btn-default-2.focus {
+  background-color: #333333;
+  border-color: #ccc;
+}
+.btn-default-2 .badge {
+  color: #fff;
+  background-color: #fff;
+}
+
+/* Button Circle */
 .btn-circle {
   width: 30px;
   height: 30px;
