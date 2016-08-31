@@ -110,6 +110,11 @@
 
 		var standInterval = $(buttonGroup).width();
 		var baseButt = $('<button type="button" class="btn btn-lg btn-circle btn-default"></button>');
+
+		$.get("http://localhost:3000/children", function(data, status){
+			$(baseButt).data("children", data["children"]);
+		});
+
 		$(baseButt).css({top: -100, bottom: -100, margin: 'auto', left: standInterval * 1.25, position: 'absolute'});
 		$(encaps).append(baseButt);
 		$(baseButt).data("directory", "/");
@@ -142,9 +147,7 @@
 			$(this).data("open", false);
 		} else {
 			if($(parent).data("active")!=null){
-				console.log("T");
 				createChild.call($(parent).data("active"));
-				console.log($(parent).data("active"));
 			}
 
 			var fileDir = $(this).data("directory");
@@ -152,12 +155,7 @@
 			var standInterval = $(this).data("standInterval");
 
 			//code for retrieving child files
-			var children = [];
-			$.get("http://localhost:3000/children", function(data, status){
-				console.log(data["hi"]);
-				children = data["hi"];
-			});
-			console.log(children);
+			var children = $(this).data("children");
 
 			var display = $('<div class="folder-window"></div>');
 			var caret = $('<div class="file-triangle"></div>');
@@ -179,7 +177,6 @@
 			var tempoffs = divHeight;
 			var ditMarg = 0;
 			if(divHeight > 300){
-				console.log("hi");
 				tempoffs = 300;
 				$(line).css('margin-top', 30);
 				ditMarg = 30;
@@ -202,13 +199,15 @@
 				counter++;
 				//attach listeners
 				htmlObj.on('click', createChild);
+				$.get("http://localhost:3000/children", function(data, status){
+					$(htmlObj).data("children", data["children"]);
+				});
 			});
 			$(parent).append(display);
 			var offsetTop = -tempoffs/2;
 			if($(this).hasClass('btn-file')){
 				offsetLeft = standInterval * 3.45;
 				var approx = $(this).parent().parent().offset().top - $(this).offset().top;
-				console.log(approx);
 				offsetTop = -tempoffs/2-approx+15;
 			}
 
