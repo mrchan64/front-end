@@ -22,6 +22,11 @@ body {
     display: none;
 }
 
+@font-face {
+  font-family: SAO;
+  src: url('assets/fonts/SAO-font.otf');
+}
+
 .site-wrapper {
   position: relative;
   width: 100%;
@@ -203,6 +208,17 @@ body {
   height: 0;
 }
 
+.window-text{
+  height: 100%;
+  padding: 4px 2px;
+  font-family: SAO;
+  font-size: 16px;
+  line-height: 100%;
+  text-align: left;
+  float: left;
+  width: 120px;
+  overflow: hidden;
+}
 
 /* Custom button crap */
 
@@ -395,7 +411,7 @@ fieldset[disabled] .btn-default-2a.focus {
 .btn-circle.btn-lg {
   width: 50px;
   height: 50px;
-  padding: 10px 16px;
+  padding: 10px 8px;
   font-size: 18px;
   line-height: 1.33;
   border-radius: 25px;
@@ -413,7 +429,7 @@ fieldset[disabled] .btn-default-2a.focus {
   height: 30px;
   width: 150px;
   text-align: center;
-  padding: 6px 6px;
+  padding: 2px 2px;
   font-size: 12px;
   line-height: 1.428571429;
   border-radius: 0px;
