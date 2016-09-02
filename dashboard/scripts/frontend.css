@@ -24,7 +24,7 @@ body {
 
 @font-face {
   font-family: SAO;
-  src: url('assets/fonts/SAO-font.otf');
+  src: url('fonts/SAO-font.otf');
 }
 
 .site-wrapper {

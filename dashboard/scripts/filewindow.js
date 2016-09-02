@@ -83,7 +83,7 @@
 
 		$(buttonGroup).append(delButt);
 
-		var delButtImg = $('<img src="assets/delete.png">');
+		var delButtImg = $('<img src="delete.png">');
 		$(delButtImg).css({width:widthNorm})
 		$(delButtImg).css('pointer-events', 'none');
 
@@ -95,7 +95,7 @@
 
 		$(buttonGroup).append(moveButt);
 
-		var moveButtImg = $('<img src="assets/move.png">');
+		var moveButtImg = $('<img src="move.png">');
 		$(moveButtImg).css({width:widthNorm})
 		$(moveButtImg).css('pointer-events', 'none');
 
@@ -116,7 +116,7 @@
 			$(htmlObj).data("children", data["children"]);
 		}, "json");
 
-		var baseButtImg = $('<img src="assets/folder-light-gray.png">');
+		var baseButtImg = $('<img src="folder-light-gray.png">');
 		$(baseButtImg).css({height: '100%'});
 		$(baseButtImg).css('pointer-events', 'none');
 		$(baseButt).append(baseButtImg);
@@ -210,19 +210,19 @@
 				}
 				counter++;
 
-				var icon = $('<img src="assets/file-dark-gray.png">');
+				var icon = $('<img src="file-dark-gray.png">');
 				var text = $('<div class="window-text">'+this["name"]+'</div>');
 
 				switch(this["type"]){
 					case "folder":
-						icon = $('<img src="assets/folder-dark-gray.png">');
+						icon = $('<img src="folder-dark-gray.png">');
 						var pass = {"directory": $(htmlObj).data("directory")};
 						$.post("http://localhost:3000/children", pass, function(data, status){
 							$(htmlObj).data("children", data["children"]);
 						}, "json");
 						break;
 					case "new":
-						icon = $('<img src="assets/new-folder-dark-gray.png">');
+						icon = $('<img src="new-folder-dark-gray.png">');
 						break;
 				}
 
