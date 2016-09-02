@@ -6,6 +6,7 @@ var server = http.createServer(app);
 
 app.use(express.static('assets'));
 app.use(express.static('scripts'));
+app.use(express.static('../node_modules'));
 
 app.get("/dashboard", function(reg, res){
 	res.sendFile(__dirname + '/index.html');
