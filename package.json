@@ -1,0 +1,30 @@
+{
+  "name": "front-end",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mrchan64/front-end.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mrchan64/front-end/issues"
+  },
+  "homepage": "https://github.com/mrchan64/front-end#readme",
+  "engines": {
+    "node": "6.2.0"
+  },
+  "dependencies": {
+    "body-parser": "1.15.2",
+    "bootstrap": "3.3.7",
+    "cors": "2.8.0",
+    "express": "4.14.0",
+    "jquery": "3.1.0"
+  }
+}
