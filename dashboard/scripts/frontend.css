@@ -46,9 +46,10 @@ body {
   height: auto;
   min-height: 120%;
   min-width: 120%;
-  opacity: 0.7;
-  filter: alpha(opacity = 70);
+  opacity: 0.5;
+  filter: alpha(opacity = 50);
   margin: auto;
+  /*-webkit-filter: blur(10px);*/
 }
 
 .explorer-windows {

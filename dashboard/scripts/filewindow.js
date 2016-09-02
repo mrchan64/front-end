@@ -6,6 +6,10 @@
 	var width = $(window).innerWidth();
 	var lastStaticMove = {x:0, y:0};
 	var generator = {x:width/2, y:height/2};
+	var apiIp = "";
+	$.get("/api", function(data, status){
+		apiIp = data["ip"];
+	});
 	initialize();
 	resize();
     window.addEventListener('mousemove', mouseMove);
@@ -112,8 +116,8 @@
 		var baseButt = $('<button type="button" class="btn btn-lg btn-circle btn-default"></button>');
 
 		var pass = {directory: ""};
-		$.post("http://localhost:3000/children", pass, function(data, status){
-			$(htmlObj).data("children", data["children"]);
+		$.post(apiIp+'/children', pass, function(data, status){
+			$(baseButt).data("children", data["children"]);
 		}, "json");
 
 		var baseButtImg = $('<img src="folder-light-gray.png">');
@@ -217,9 +221,10 @@
 					case "folder":
 						icon = $('<img src="folder-dark-gray.png">');
 						var pass = {"directory": $(htmlObj).data("directory")};
-						$.post("http://localhost:3000/children", pass, function(data, status){
+						$.post(apiIp+'/children', pass, function(data, status){
 							$(htmlObj).data("children", data["children"]);
 						}, "json");
+						htmlObj.on('click', createChild);
 						break;
 					case "new":
 						icon = $('<img src="new-folder-dark-gray.png">');
@@ -232,9 +237,6 @@
 
 				$(htmlObj).append(icon);
 				$(htmlObj).append(text);
-
-				//attach listeners
-				htmlObj.on('click', createChild);
 			});
 			$(parent).append(display);
 			var offsetTop = -tempoffs/2;

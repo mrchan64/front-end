@@ -27,9 +27,7 @@
 
     // Event handling
     function addListeners() {
-        if(!('ontouchstart' in window)) {
-            window.addEventListener('mousemove', mouseMove);
-        }
+        window.addEventListener('mousemove', mouseMove);
         window.addEventListener('resize', resize);
     }
 
@@ -45,6 +43,6 @@
         }
         image.style.left = parseInt(imagestart.left, 10)+(width/2-posx)/100 +'px';
         image.style.top = parseInt(imagestart.top, 10)+(height/2-posy)/100 + 'px';
-        }
+    }
 
 })();

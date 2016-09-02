@@ -6,6 +6,9 @@ var bodyParser = require("body-parser");
 var app = express();
 
 app.use(cors());
+app.use(bodyParser.urlencoded({
+	extended: true
+}))
 app.use(bodyParser.json());
 
 app.post('/children', function (req, res) {
@@ -23,7 +26,7 @@ function getChildren(src){
 	if(checkTampering(src)){
 		return {"hi": "y u gotta be a bitch"};
 	}
-	src = path.join("../..", src);
+	src = path.join("../..", src);	//temp
 	src = path.join(__dirname, src);
 	var childrenNodes = [];
 	var children = fs.readdirSync(src);
