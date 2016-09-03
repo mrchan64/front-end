@@ -31,12 +31,18 @@ function getChildren(src){
 	var childrenNodes = [];
 	var children = fs.readdirSync(src);
 	var files = [];
+	var images = [];
 	for(var i=0; i<children.length; i++){
 		if(fs.statSync(path.join(src, children[i])).isDirectory()){
 			childrenNodes.push({
 				"name": children[i],
 				"type": "folder"
 			});
+		}else if(isImage(children[i])){
+			images.push({
+				"name": children[i],
+				"type": "image"
+			})
 		}else{
 			files.push({
 				"name": children[i],
@@ -44,6 +50,7 @@ function getChildren(src){
 			})
 		}
 	}
+	Array.prototype.push.apply(childrenNodes, images);
 	Array.prototype.push.apply(childrenNodes, files);
 	var nFolder = {
 		"name": "New Folder",
@@ -57,6 +64,18 @@ function checkTampering(src){
 	var tokenized = src.split("/");
 	if(tokenized.indexOf("..") >= 0){
 		return true;
+	}
+	return false;
+}
+
+function isImage(fname){
+	var validImageExtensions = ["png", "jpg", "jpeg", "ico"];
+	var ext = fname.split('.');
+	var extension = ext[ext.length-1];
+	for(var i = 0; i<validImageExtensions.length; i++){
+		if(extension == validImageExtensions[i]){
+			return true;
+		}
 	}
 	return false;
 }

@@ -198,7 +198,7 @@
 			var counter = 0;
 			$(children).each(function(){
 				//children{}:
-				//type: "file" "folder" "new"
+				//type: "file" "folder" "image" "new"
 				//name: "<>"
 				var htmlStr = '<button type="button" class="btn btn-file btn-default-2"></button>';
 				var htmlObj = $(htmlStr);
@@ -225,6 +225,9 @@
 							$(htmlObj).data("children", data["children"]);
 						}, "json");
 						htmlObj.on('click', createChild);
+						break;
+					case "image":
+						icon = $('<img src="image-dark-gray.png">');
 						break;
 					case "new":
 						icon = $('<img src="new-folder-dark-gray.png">');
