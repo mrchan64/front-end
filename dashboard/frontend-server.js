@@ -9,7 +9,11 @@ app.use(express.static('scripts'));
 app.use(express.static('../node_modules'));
 
 app.get("/dashboard", function(req, res){
-	res.sendFile(__dirname + '/index.html');
+	res.sendFile(__dirname + '/dashboard.html');
+});
+
+app.get("/login", function(req, res){
+	res.sendFile(__dirname + "/signin.html");
 });
 
 app.get("/api", function(req, res){

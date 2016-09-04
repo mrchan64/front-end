@@ -224,10 +224,18 @@
 						$.post(apiIp+'/children', pass, function(data, status){
 							$(htmlObj).data("children", data["children"]);
 						}, "json");
-						htmlObj.on('click', createChild);
+						$(htmlObj).on('click', createChild);
 						break;
 					case "image":
-						icon = $('<img src="image-dark-gray.png">');
+						icon = $('<img src="image-dark-gray.png">')
+						var pass = {"directory": $(htmlObj).data("directory")};;
+						console.log("sending post");
+						$.post(apiIp+'/children', pass, function(data, status){
+							console.log(status);
+							console.log(typeof(data));
+							console.log("uhhh")
+						});
+						$(htmlObj).on('click', createImage);
 						break;
 					case "new":
 						icon = $('<img src="new-folder-dark-gray.png">');
@@ -252,6 +260,72 @@
 			$(line).css({height: divHeight});
 			$(display).css({height: tempoffs, width: divWidth, top: offsetTop, left: offsetLeft, position: 'absolute'});
 			$(buttonScroll).css({height: tempoffs, width: divWidth-12, float: 'right', overflow: 'scroll'});
+
+			$(this).data("childScreen", display);
+			$(this).data("open", true);
+		}
+
+		if($(this).hasClass('btn-default-2')){
+			$(this).removeClass('btn-default-2');
+			$(this).addClass('btn-default-2a');
+			$(parent).data("active", $(this));
+		}else{
+			if($(this).hasClass('btn-default-2a')){
+				$(this).removeClass('btn-default-2a');
+				$(this).addClass('btn-default-2');
+				$(parent).data("active", null);
+			}
+		}
+	}
+
+	function createImage(){
+		var parent = $(this).parent();
+
+		if($(this).hasClass('btn-file')){
+			parent = $(this).parent().parent();
+		}
+
+		if($(this).data("open")){
+			var tbDeleted = $(this).data("childScreen");
+			$(tbDeleted).remove();
+			$(this).data("childScreen", null);
+			$(this).data("open", false);
+		} else {
+			if($(parent).data("active")!=null){
+				createChild.call($(parent).data("active"));
+			}
+
+			var fileDir = $(this).data("directory");
+
+			var standInterval = $(this).data("standInterval");
+
+			//code for retrieving child files
+			var children = $(this).data("children");
+
+			var display = $('<div class="folder-window"></div>');
+			var caret = $('<div class="file-triangle"></div>');
+			$(display).append(caret);
+			$(caret).css({top: -9999, bottom: -9999, position: 'absolute'})
+			$(caret).css("margin-top", "auto");
+			$(caret).css("margin-bottom", "auto");
+			$(caret).css("margin-left", 0);
+			$(caret).css("margin-right", 0);
+			var imageBox = $('<div class="image-box"></div>');
+			display.append(imageBox);
+
+			var divWidth = 300+12.99;
+			var tempoffs = 300;	//maintain asp ratio based on wedth
+			var offsetLeft = standInterval * 2.35;
+
+			$(parent).append(display);
+			var offsetTop = -tempoffs/2;
+			if($(this).hasClass('btn-file')){
+				offsetLeft = standInterval * 3.45;
+				var approx = $(this).parent().parent().offset().top - $(this).offset().top;
+				offsetTop = -tempoffs/2-approx+15;
+			}
+
+			$(display).css({height: tempoffs, width: divWidth, top: offsetTop, left: offsetLeft, position: 'absolute'});
 
 			$(this).data("childScreen", display);
 			$(this).data("open", true);

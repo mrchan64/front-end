@@ -5,6 +5,8 @@ var path = require("path");
 var bodyParser = require("body-parser");
 var app = express();
 
+var filesys = path.join(__dirname, "public");
+
 app.use(cors());
 app.use(bodyParser.urlencoded({
 	extended: true
@@ -13,9 +15,33 @@ app.use(bodyParser.json());
 
 app.post('/children', function (req, res) {
 	console.log(req.body);
+
 	var src = req.body["directory"];
-	var retSon = {"children": getChildren(src)};
-	res.json(retSon);
+	var selected = src.split("/");
+	selected = selected[selected.length-1];
+	if(checkTampering(src)){
+		console.log("tamper");
+		res.json({"hi": "y u gotta be a bitch"});
+		return;
+	}
+	src = path.join(filesys, src);
+	if(checkInvalidAddress(src)){
+		console.log("invalid address");
+		res.json({"error": "invalid"});
+		return;
+	}
+	if(fs.statSync(src).isDirectory()){
+		var retSon = {"children": getChildren(src)};
+		console.log("is dir");
+		res.json(retSon);
+		return;
+	}
+	if(isImage(selected)){
+		console.log("is image");
+		res.sendFile(src);
+		return;
+	}
+	console.log("something went wrong...");
 });
 
 app.listen(3000, function () {
@@ -23,11 +49,6 @@ app.listen(3000, function () {
 });
 
 function getChildren(src){
-	if(checkTampering(src)){
-		return {"hi": "y u gotta be a bitch"};
-	}
-	src = path.join("../..", src);	//temp
-	src = path.join(__dirname, src);
 	var childrenNodes = [];
 	var children = fs.readdirSync(src);
 	var files = [];
@@ -63,6 +84,15 @@ function getChildren(src){
 function checkTampering(src){
 	var tokenized = src.split("/");
 	if(tokenized.indexOf("..") >= 0){
+		return true;
+	}
+	return false;
+}
+
+function checkInvalidAddress(src){
+	try{
+		var exists = fs.statSync(src);
+	}catch(e){
 		return true;
 	}
 	return false;
