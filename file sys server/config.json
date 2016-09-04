@@ -1,0 +1,15 @@
+{
+	"users": [
+		{
+			"username": "Matthew Chan",
+			"password": "Regrowrainbow8!"
+		}
+	],
+
+	"session": {
+		"cookieName": "DashSession",
+		"secret": "7EjTs2N0bQ",
+		"duration": 86400000,
+		"activeDuration": 300000
+	}
+}

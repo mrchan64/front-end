@@ -3,15 +3,30 @@ var cors = require("cors");
 var fs = require("fs");
 var path = require("path");
 var bodyParser = require("body-parser");
+var session = require('client-sessions');
+var jsonfile = require("jsonfile");
 var app = express();
 
 var filesys = path.join(__dirname, "public");
+var users = {};
+var sessionSettings = {};
+jsonfile.readFileSync('/config.json', function(err, obj){
+	users = obj.users;
+	sessionSettings = obj.session;
+})
 
 app.use(cors());
+
+app.use(sessions(sessionSettings));
+
 app.use(bodyParser.urlencoded({
 	extended: true
 }))
 app.use(bodyParser.json());
+
+app.post('/login', function (req, res){
+	
+})
 
 app.post('/children', function (req, res) {
 	console.log(req.body);
