@@ -2,6 +2,7 @@ var express = require("express");
 var http = require("http");
 
 app = express();
+
 var server = http.createServer(app);
 
 app.use(express.static('assets'));
