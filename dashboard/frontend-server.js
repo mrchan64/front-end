@@ -6,7 +6,8 @@ app = express();
 var server = http.createServer(app);
 
 app.use(express.static('assets'));
-app.use(express.static('scripts'));
+app.use(express.static('dashboard-scripts'));
+app.use(express.static('signin-scripts'));
 app.use(express.static('../node_modules'));
 
 app.get("/dashboard", function(req, res){

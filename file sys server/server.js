@@ -8,16 +8,12 @@ var jsonfile = require("jsonfile");
 var app = express();
 
 var filesys = path.join(__dirname, "public");
-var users = {};
-var sessionSettings = {};
-jsonfile.readFileSync('/config.json', function(err, obj){
-	users = obj.users;
-	sessionSettings = obj.session;
-})
-
+var obj = jsonfile.readFileSync('config.json');
+var users = obj.users;;
+var sessionSettings = obj.session;
 app.use(cors());
 
-app.use(sessions(sessionSettings));
+app.use(session(sessionSettings));
 
 app.use(bodyParser.urlencoded({
 	extended: true
@@ -25,7 +21,18 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 app.post('/login', function (req, res){
-	
+	for(var i=0; i<users.length; i++){
+		if(req.body.username === users[i].username && req.body.password === users[i].password){
+			//req.session.username = users[i].username;
+			res.json({
+				"status": 1
+			})
+			return;
+		}
+	}
+	res.json({
+		"status": 0
+	});
 })
 
 app.post('/children', function (req, res) {
