@@ -1,0 +1,116 @@
+body {
+  background-color: #000;
+  overflow: hidden;
+}
+
+.site-background {
+  position: absolute;
+  top: -9999px;
+  bottom: -9999px;
+  left: -9999px;
+  right: -9999px;
+  width: auto;
+  height: auto;
+  min-height: 120%;
+  min-width: 120%;
+  opacity: 0.5;
+  filter: alpha(opacity = 50);
+  margin: auto;
+  z-index: -1;
+  /*-webkit-filter: blur(10px);*/
+}
+.form-signin {
+
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+  margin-top: 20%;
+}
+.form-signin .form-signin-heading{
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+.form-signin .checkbox {
+  font-weight: normal;
+}
+.form-signin .form-control {
+  position: relative;
+  height: auto;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 10px;
+  font-size: 16px;
+}
+.form-signin .form-control:focus {
+  z-index: 2;
+}
+.form-signin input[type="username"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+/* CUSTOM BUTTON */
+.btn-default {
+  color: #eee;
+  background-color: #555555;
+  border-color: #333333;
+}
+.btn-default:focus,
+.btn-default.focus {
+  color: #eee;
+  background-color: #555555;
+  border-color: #333333;
+}
+.btn-default:hover {
+  color: #eee;
+  background-color: #333333;
+  border-color: #000;
+}
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+  color: #fff;
+  background-color: #e6e6e6;
+  border-color: #adadad;
+}
+.btn-default:active:hover,
+.btn-default.active:hover,
+.open > .dropdown-toggle.btn-default:hover,
+.btn-default:active:focus,
+.btn-default.active:focus,
+.open > .dropdown-toggle.btn-default:focus,
+.btn-default:active.focus,
+.btn-default.active.focus,
+.open > .dropdown-toggle.btn-default.focus {
+  color: #eee;
+  background-color: #2f2f2f;
+  border-color: #000;
+}
+.btn-default:active,
+.btn-default.active,
+.open > .dropdown-toggle.btn-default {
+  background-image: none;
+}
+.btn-default.disabled:hover,
+.btn-default[disabled]:hover,
+fieldset[disabled] .btn-default:hover,
+.btn-default.disabled:focus,
+.btn-default[disabled]:focus,
+fieldset[disabled] .btn-default:focus,
+.btn-default.disabled.focus,
+.btn-default[disabled].focus,
+fieldset[disabled] .btn-default.focus {
+  background-color: #333333;
+  border-color: #ccc;
+}
+.btn-default .badge {
+  color: #fff;
+  background-color: #fff;
+}
