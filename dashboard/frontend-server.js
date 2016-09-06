@@ -1,5 +1,10 @@
 var express = require("express");
 var http = require("http");
+var session = require('client-sessions');
+var jsonfile = require("jsonfile");
+var obj = jsonfile.readFileSync('../file\ sys\ server/config.json');
+var users = obj.users;;
+var sessionSettings = obj.session;
 
 app = express();
 

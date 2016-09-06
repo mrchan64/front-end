@@ -10,6 +10,8 @@
 		"cookieName": "DashSession",
 		"secret": "7EjTs2N0bQ",
 		"duration": 86400000,
-		"activeDuration": 300000
+		"activeDuration": 300000,
+		"httpOnly": true,
+		"secure": true
 	}
 }
