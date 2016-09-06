@@ -23,7 +23,7 @@ app.use(bodyParser.json());
 app.post('/login', function (req, res){
 	for(var i=0; i<users.length; i++){
 		if(req.body.username === users[i].username && req.body.password === users[i].password){
-			//req.session.username = users[i].username;
+			req.DashSession.username = users[i].username;
 			res.json({
 				"status": 1
 			})
@@ -33,7 +33,22 @@ app.post('/login', function (req, res){
 	res.json({
 		"status": 0
 	});
-})
+});
+
+app.get('/checkLogin', function (req, res){
+	if(checkLogin(req)){
+		res.json({
+			"status": 1
+		});
+		return;
+	}
+	if(req.DashSession){
+		req.DashSession.reset();
+	}
+	res.json({
+		"status": 0
+	});
+});
 
 app.post('/children', function (req, res) {
 	console.log(req.body);
@@ -69,6 +84,17 @@ app.post('/children', function (req, res) {
 app.listen(3000, function () {
 	console.log('Server started');
 });
+
+function checkLogin(req){
+	if(req.DashSession && req.DashSession.username){
+		for(var i=0; i<users.length; i++){
+			if(req.DashSession.username === users[i].username){
+				return true;
+			}
+		}
+	}
+	return false;
+}
 
 function getChildren(src){
 	var childrenNodes = [];
