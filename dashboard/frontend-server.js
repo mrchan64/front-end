@@ -24,7 +24,7 @@ app.get("/login", function(req, res){
 });
 
 app.get("/api", function(req, res){
-	var ip = "http://24.6.23.177:3000";
+	var ip = "http://localhost:3000";
 	//code for getting ip
 	res.json({"ip": ip});
 });
