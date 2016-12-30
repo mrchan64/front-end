@@ -13,10 +13,22 @@ function initialize_tiles() {
 	var marginX = (width - cursorSpace - tileXNum * tileWidth)/(tileXNum + 1);
 	var marginY = (height - cursorSpace - tileYNum * tileHeight)/(tileYNum + 1);
 
-	var cursorX = 
+	var cursorX = 0;
+	var cursorY = 0;
 
 	var tileYIndex = 0;
 	for(i = 0; i<tileYNum; i++){
 		tileYIndex +=
+	}
+}
+
+function Tileable(x, y, width, height) {
+	this.x = x;
+	this.y = y;
+	this.width = width;
+	this.height = height;
+
+	this.update = function(){
+		
 	}
 }
