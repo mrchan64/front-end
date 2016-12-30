@@ -1,0 +1,9 @@
+{
+	"session": {
+		"cookieName": "LoginSession",
+		"secret": "0dirXOfvPE",
+		"duration": 86400000,
+		"activeDuration": 300000,
+		"secure": false
+	}
+}

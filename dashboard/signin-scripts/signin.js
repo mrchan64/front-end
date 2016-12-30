@@ -1,5 +1,14 @@
 (function(){
 
+	var cookies = document.cookie.split(';')
+	var client_id = null;
+	for(i = 0; i<cookies.length; i++){
+		if(cookies[i].substring(0,9)=="client_id"){
+			client_id = cookies[i].substring(10,cookies[i].length);
+			break;
+		}
+	}
+
 	var apiIp = "";
 	$.get("/api", function(data, status){
 		apiIp = data["ip"];
@@ -9,9 +18,10 @@
 		event.preventDefault();
 		var data = {
 			"username": $('#inputUsername').val(),
-			"password": $('#inputPassword').val()
+			"password": $('#inputPassword').val(),
+			"client_id": client_id
 		}
-		$.post(apiIp+'/login', data, function(data, status){
+		$.post(apiIp+'/login', data, function(data, status, request){
 			if(data.status){
 				window.location.href = "/dashboard";
 			}else{

@@ -1,16 +1,31 @@
 var express = require("express");
+var http = require("http");
 var cors = require("cors");
 var fs = require("fs");
 var path = require("path");
 var bodyParser = require("body-parser");
 var session = require('client-sessions');
 var jsonfile = require("jsonfile");
+var io = require('socket.io');
 var app = express();
 
 var filesys = path.join(__dirname, "public");
-var obj = jsonfile.readFileSync('config.json');
-var users = obj.users;;
-var sessionSettings = obj.session;
+var users = [];
+var sessionSettings = {};
+
+var frontend = "http://localhost:2000"
+
+try{
+	var obj = jsonfile.readFileSync('config.json');
+	users = obj.users;
+	sessionSettings = obj.session;
+	filesys=obj.directory;
+}
+catch (err){
+	console.log("No Config File Found");
+	return;
+}
+
 app.use(cors());
 
 app.use(session(sessionSettings));
@@ -20,10 +35,41 @@ app.use(bodyParser.urlencoded({
 }))
 app.use(bodyParser.json());
 
+app.use(function(req, res, next){
+	console.log(new Date()+" | Attempt to " + req.method+" "+req.url);
+	next();
+});
+
+var server = http.createServer(app);
+
 app.post('/login', function (req, res){
+	if(req.body.client_id==null){
+		res.json({
+			"status": 0
+		});
+		return;
+	}
 	for(var i=0; i<users.length; i++){
 		if(req.body.username === users[i].username && req.body.password === users[i].password){
 			req.DashSession.username = users[i].username;
+			users[i].client_id = req.body.client_id;
+			res.json({
+				"status": 1
+			})
+			io.emit(
+				"active", users[i].client_id
+			)
+			return;
+		}
+	}
+	res.json({
+		"status": 0
+	});
+});
+
+app.post('/checkLogin', function (req, res){
+	for(var i=0; i<users.length; i++){
+		if(users[i].client_id == req.body.client_id){
 			res.json({
 				"status": 1
 			})
@@ -35,54 +81,37 @@ app.post('/login', function (req, res){
 	});
 });
 
-app.get('/checkLogin', function (req, res){
-	if(checkLogin(req)){
-		res.json({
-			"status": 1
-		});
-		return;
-	}
-	if(req.DashSession){
-		req.DashSession.reset();
-	}
-	res.json({
-		"status": 0
-	});
-});
-
 app.post('/children', function (req, res) {
-	console.log(req.body);
-
 	var src = req.body["directory"];
 	var selected = src.split("/");
 	selected = selected[selected.length-1];
 	if(checkTampering(src)){
-		console.log("tamper");
+		console.log(new Date()+" | Tampered child request");
 		res.json({"hi": "y u gotta be a bitch"});
 		return;
 	}
 	src = path.join(filesys, src);
 	if(checkInvalidAddress(src)){
-		console.log("invalid address");
+		console.log(new Date()+" | Invalid address for child request");
 		res.json({"error": "invalid"});
 		return;
 	}
 	if(fs.statSync(src).isDirectory()){
 		var retSon = {"children": getChildren(src)};
-		console.log("is dir");
+		console.log(new Date()+" | Requested child is a valid directory");
 		res.json(retSon);
 		return;
 	}
 	if(isImage(selected)){
-		console.log("is image");
+		console.log(new Date()+" | Requested child is a valid image");
 		res.sendFile(src);
 		return;
 	}
-	console.log("something went wrong...");
+	console.log(new Date()+" | Child request failed");
 });
 
-app.listen(3000, function () {
-	console.log('Server started');
+server.listen(3000, function () {
+	console.log(new Date()+" | Backend server started");
 });
 
 function checkLogin(req){
@@ -157,3 +186,14 @@ function isImage(fname){
 	}
 	return false;
 }
+
+io = io.listen(server);
+io.sockets.on('connection', function(socket){
+	console.log(new Date()+" | "+socket.handshake.address+" has connected");
+});
+io.sockets.on('emit', function(data){
+	console.log(new Date()+" | Sent "+JSON.stringify(data));
+});
+io.sockets.on('disconnect', function(socket){
+	console.log(new Date()+" | "+socket.handshake.address+" has disconnected")
+});
