@@ -1,5 +1,5 @@
 var tileWidth = 100;
-var tileHeight = 300;
+var tileHeight = 100;
 var minMargin = 40;
 var cursorSpace = 10;
 
@@ -8,10 +8,8 @@ var width = $(window).width();
 
 var canvas = $("#tileable");
 $(canvas).css({position: 'absolute'});
-
-var tiles = [];
-block_example();
-//$(window).on('mousemove', tile_update_example);
+var tileManager = new TileableManager(canvas);
+tile_example();
 
 function block_example() {
 	var block = $("<div></div>");
@@ -36,17 +34,10 @@ function tile_example() {
 			tileXIndex += marginX;
 			var tile = new Tileable(tileXIndex, tileYIndex, tileWidth, tileHeight);
 			$(canvas).append(tile.element);
-			tiles[tiles.length] = tile;
 			tileXIndex += tileWidth;
 		}
 		tileYIndex += tileHeight;
 	}
-}
-
-function tile_update_example(event) {
-	tiles.forEach(function(element){
-		element.update(event.clientX, event.clientY);
-	});
 }
 
 function window_resize(event) {
@@ -57,6 +48,8 @@ function window_resize(event) {
 function Tileable() {
 	var e=this;
 	this.margin = 10;
+	this.expansion = 1.01;
+	this.lastStaticMove = {x:0, y:0};
 
 	this.init1 = function(x, y, w, h){
 		this.x = x;
@@ -67,9 +60,8 @@ function Tileable() {
 		this.element.css({top: this.y, left: this.x, width: this.width, height: this.height, position: 'absolute'});
 		this.element.css("background-color", "#000");
 		this.element.data("obj", this);
-		$(window).on('mousemove', function(event){
-			e.update(event.clientX, event.clientY);
-		});
+		this.manager = tileManager;
+		this.manager.tiles[this.manager.tiles.length] = this;
 	}
 
 	this.init2 = function(obj){
@@ -80,9 +72,8 @@ function Tileable() {
 		this.width = pixel_to_number(this.element.css("width"));
 		this.height = pixel_to_number(this.element.css("height"));
 		this.element.data("obj", this);
-		$(window).on('mousemove', function(event){
-			e.update(event.clientX, event.clientY);
-		});
+		this.manager = tileManager;
+		this.manager.tiles[this.manager.tiles.length] = this;
 	}
 
 	this.update = function(mouseX, mouseY){
@@ -91,15 +82,35 @@ function Tileable() {
 		}else if(mouseX>this.x+cursorSpace+this.width){
 			this.element.css("left", this.x-this.margin*(mouseX-this.x-this.width)/width);
 		}else{
-			this.element.css("left", this.x+cursorSpace*position_curve((mouseX-this.x)/(cursorSpace+this.width)));
+			this.lastStaticMove.x = cursorSpace*position_curve((mouseX-this.x)/(cursorSpace+this.width))
+			this.element.css("left", this.x+this.lastStaticMove.x);
 		}
 		if(mouseY<this.y){
 			this.element.css("top", this.y+cursorSpace+this.margin*((this.y-mouseY)/height));
 		}else if(mouseY>this.y+cursorSpace+this.height){
 			this.element.css("top", this.y-this.margin*(mouseY-this.y-this.height)/height);
 		}else{
-			this.element.css("top", this.y+cursorSpace*position_curve((mouseY-this.y)/(cursorSpace+this.height)));
+			this.lastStaticMove.y = cursorSpace*position_curve((mouseY-this.y)/(cursorSpace+this.height))
+			this.element.css("top", this.y+this.lastStaticMove.y);
 		}
+	}
+
+	this.fmove = function(){
+		this.element.css("width", this.width*this.expansion);
+		this.element.css("height", this.height*this.expansion);
+		this.move();
+	}
+
+	this.move = function(){
+		this.element.css("left", this.x+this.lastStaticMove.x-this.width*(this.expansion-1)/2);
+		this.element.css("top", this.y+this.lastStaticMove.y-this.height*(this.expansion-1)/2);
+	}
+
+	this.unmove = function(){
+		this.element.css("width", this.width);
+		this.element.css("height", this.height);
+		this.element.css("left", this.x+this.lastStaticMove.x);
+		this.element.css("top", this.y+this.lastStaticMove.y);
 	}
 
 	switch(arguments.length){
@@ -112,6 +123,59 @@ function Tileable() {
 		default:
 			console.log("Tile init failed");
 	}
+}
+
+function TileableManager(obj) {
+	this.element = obj;
+	this.element.data("obj", this);
+
+	this.tiles = [];
+	var e = this;
+
+	this.selected = null;
+	this.lastStaticMove = {x:0, y:0};
+	this.tile_selected = function(event) {
+		if(e.selected == null){
+			e.lastStaticMove = {x:event.clientX, y:event.clientY};
+			for(i=0; i<e.tiles.length; i++){
+				var t = e.tiles[i]
+				var x = pixel_to_number(t.element.css("left"));
+				var y = pixel_to_number(t.element.css("top"));
+				var width = pixel_to_number(t.element.css("width"));
+				var height = pixel_to_number(t.element.css("height"));
+				if(x<event.clientX && x+width>event.clientX && y<event.clientY && y+height>event.clientY){
+					e.selected = t;
+					break;
+				}
+				if(i+1 >= e.tiles.length){
+					return;
+				}
+			}
+			e.selected.fmove();
+		}
+	}
+	this.tile_deselected = function(event) {
+		if(e.selected == null)return;
+		e.selected.unmove();
+		e.selected = null;
+	}
+
+	this.tile_update = function(event) {
+		if(e.selected == null){
+			e.tiles.forEach(function(element){
+				element.update(event.clientX, event.clientY);
+			});
+		}else{
+			e.selected.x += event.clientX-e.lastStaticMove.x;
+			e.selected.y += event.clientY-e.lastStaticMove.y;
+			e.lastStaticMove = {x:event.clientX, y:event.clientY};
+			e.selected.move();
+		}
+	}
+
+	$(window).on('mousemove', this.tile_update);
+	$(window).on('mousedown', this.tile_selected);
+	$(window).on('mouseup', this.tile_deselected);
 }
 
 function position_curve(input){
