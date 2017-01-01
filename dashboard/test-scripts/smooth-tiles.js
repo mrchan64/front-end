@@ -3,29 +3,23 @@ var tileHeight = 300;
 var minMargin = 40;
 var cursorSpace = 20;
 
-var height = 0;
-var width = 0;
-var tileXNum = 0;
-var tileYNum = 0;
-var marginX = 0;
-var marginY = 0;
+
+var height = $(window).height();
+var width = $(window).width();
 
 var canvas = $("#tileable");
 $(canvas).css({position: 'absolute'});
 
 var tiles = [];
-initialize_tiles();
-$(window).on('mousemove', tile_update);
+tile_example();
+//$(window).on('mousemove', tile_update);
 
-function initialize_tiles() {
-	height = $(window).height();
-	width = $(window).width();
+function tile_example() {
+	var tileXNum = Math.floor((width - cursorSpace - minMargin)/(tileWidth + minMargin));
+	var tileYNum = Math.floor((height - cursorSpace - minMargin)/(tileHeight + minMargin));
 
-	tileXNum = Math.floor((width - cursorSpace - minMargin)/(tileWidth + minMargin));
-	tileYNum = Math.floor((height - cursorSpace - minMargin)/(tileHeight + minMargin));
-
-	marginX = (width - cursorSpace - tileXNum * tileWidth)/(tileXNum + 1);
-	marginY = (height - cursorSpace - tileYNum * tileHeight)/(tileYNum + 1);
+	var marginX = (width - cursorSpace - tileXNum * tileWidth)/(tileXNum + 1);
+	var marginY = (height - cursorSpace - tileYNum * tileHeight)/(tileYNum + 1);
 
 	var tileYIndex = 0;
 	for(i = 0; i<tileYNum; i++){
@@ -48,17 +42,37 @@ function tile_update(event) {
 	});
 }
 
-function Tileable(x, y, w, h) {
-	this.x = x;
-	this.y = y;
-	this.width = w;
-	this.height = h;
+function window_resize(event) {
+	height = $(window).height();
+	width = $(window).width();
+}
 
-	this.element = $("<div></div>");
-	this.element.css({top: this.y, left: this.x, width: this.width, height: this.height, position: 'absolute'});
-	this.element.css("background-color", "#000");
+function Tileable() {
 
-	this.element.data("objectAssoc", this);
+	this.init1 = function(x, y, w, h){
+		this.x = x;
+		this.y = y;
+		this.width = w;
+		this.height = h;
+		this.element = $("<div></div>");
+		this.element.css({top: this.y, left: this.x, width: this.width, height: this.height, position: 'absolute'});
+		this.element.css("background-color", "#000");
+		this.element.data("obj", this);
+		$(window).on('mousemove', function(event){
+			console.log(this.x);
+			this.update(event.clientX, event.clientY);
+		});
+	}
+
+	this.init2 = function(obj){
+		this.element = $(obj);
+		this.element.css("position", absolute);
+		this.x = this.element.css("left");
+		this.y = this.element.css("top");
+		this.width = this.element.css("width");
+		this.height = this.element.css("height");
+		this.element.data("obj", this);
+	}
 
 	this.update = function(mouseX, mouseY){
 		if(mouseX<this.x){
@@ -75,6 +89,17 @@ function Tileable(x, y, w, h) {
 		}else{
 			this.element.css("top", this.y+cursorSpace*position_curve((mouseY-this.y)/(cursorSpace+this.height)));
 		}
+	}
+
+	switch(arguments.length){
+		case 4:
+			this.init1.apply(this, arguments);
+			break;
+		case 1:
+			this.init2.apply(this, arguments);
+			break;
+		default:
+			console.log("Tile init failed");
 	}
 }
 
