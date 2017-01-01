@@ -12,7 +12,7 @@ $(canvas).css({position: 'absolute'});
 
 var tiles = [];
 tile_example();
-//$(window).on('mousemove', tile_update);
+$(window).on('mousemove', tile_update);
 
 function tile_example() {
 	var tileXNum = Math.floor((width - cursorSpace - minMargin)/(tileWidth + minMargin));
@@ -58,10 +58,10 @@ function Tileable() {
 		this.element.css({top: this.y, left: this.x, width: this.width, height: this.height, position: 'absolute'});
 		this.element.css("background-color", "#000");
 		this.element.data("obj", this);
+		/*var e=this;
 		$(window).on('mousemove', function(event){
-			console.log(this.x);
-			this.update(event.clientX, event.clientY);
-		});
+			e.update(event.clientX, event.clientY);
+		});*/
 	}
 
 	this.init2 = function(obj){
