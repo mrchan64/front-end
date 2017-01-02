@@ -3,11 +3,9 @@ var tileHeight = 100;
 var minMargin = 40;
 var cursorSpace = 10;
 
-var height = $(window).height();
-var width = $(window).width();
-
 var canvas = $("#tileable");
 $(canvas).css({position: 'absolute'});
+$(canvas).addClass("example-manager");
 var tileManager = new TileableManager(canvas);
 tile_example();
 
@@ -16,15 +14,14 @@ function block_example() {
 	block.css({top: 500, left: 1000, width: 400, height: 400, position: 'absolute'});
 	block.css("background-color", "#000");
 	var tile = new Tileable(block);
-	$(canvas).append(block);
 }
 
 function tile_example() {
-	var tileXNum = Math.floor((width - cursorSpace - minMargin)/(tileWidth + minMargin));
-	var tileYNum = Math.floor((height - cursorSpace - minMargin)/(tileHeight + minMargin));
+	var tileXNum = Math.floor((tileManager.width - cursorSpace - minMargin)/(tileWidth + minMargin));
+	var tileYNum = Math.floor((tileManager.height - cursorSpace - minMargin)/(tileHeight + minMargin));
 
-	var marginX = (width - cursorSpace - tileXNum * tileWidth)/(tileXNum + 1);
-	var marginY = (height - cursorSpace - tileYNum * tileHeight)/(tileYNum + 1);
+	var marginX = (tileManager.width - cursorSpace - tileXNum * tileWidth)/(tileXNum + 1);
+	var marginY = (tileManager.height - cursorSpace - tileYNum * tileHeight)/(tileYNum + 1);
 
 	var tileYIndex = 0;
 	for(i = 0; i<tileYNum; i++){
@@ -33,16 +30,10 @@ function tile_example() {
 		for(j = 0; j<tileXNum; j++){
 			tileXIndex += marginX;
 			var tile = new Tileable(tileXIndex, tileYIndex, tileWidth, tileHeight);
-			$(canvas).append(tile.element);
 			tileXIndex += tileWidth;
 		}
 		tileYIndex += tileHeight;
 	}
-}
-
-function window_resize(event) {
-	height = $(window).height();
-	width = $(window).width();
 }
 
 function Tileable() {
@@ -57,11 +48,12 @@ function Tileable() {
 		this.width = w;
 		this.height = h;
 		this.element = $("<div></div>");
-		this.element.css({top: this.y, left: this.x, width: this.width, height: this.height, position: 'absolute'});
-		this.element.css("background-color", "#000");
+		this.element.css({top: this.y, left: this.x, width: this.width, height: this.height});
+		this.element.addClass("example-block");
 		this.element.data("obj", this);
 		this.manager = tileManager;
-		this.manager.tiles[this.manager.tiles.length] = this;
+		this.manager.tiles.unshift(this);
+		this.manager.element.append(this.element);
 	}
 
 	this.init2 = function(obj){
@@ -73,22 +65,23 @@ function Tileable() {
 		this.height = pixel_to_number(this.element.css("height"));
 		this.element.data("obj", this);
 		this.manager = tileManager;
-		this.manager.tiles[this.manager.tiles.length] = this;
+		this.manager.tiles.unshift(this);
+		this.manager.element.append(this.element);
 	}
 
 	this.update = function(mouseX, mouseY){
 		if(mouseX<this.x){
-			this.element.css("left", this.x+cursorSpace+this.margin*((this.x-mouseX)/width));
+			this.element.css("left", this.x+cursorSpace+this.margin*((this.x-mouseX)/this.manager.width));
 		}else if(mouseX>this.x+cursorSpace+this.width){
-			this.element.css("left", this.x-this.margin*(mouseX-this.x-this.width)/width);
+			this.element.css("left", this.x-this.margin*(mouseX-this.x-this.width)/this.manager.width);
 		}else{
 			this.lastStaticMove.x = cursorSpace*position_curve((mouseX-this.x)/(cursorSpace+this.width))
 			this.element.css("left", this.x+this.lastStaticMove.x);
 		}
 		if(mouseY<this.y){
-			this.element.css("top", this.y+cursorSpace+this.margin*((this.y-mouseY)/height));
+			this.element.css("top", this.y+cursorSpace+this.margin*((this.y-mouseY)/this.manager.height));
 		}else if(mouseY>this.y+cursorSpace+this.height){
-			this.element.css("top", this.y-this.margin*(mouseY-this.y-this.height)/height);
+			this.element.css("top", this.y-this.margin*(mouseY-this.y-this.height)/this.manager.height);
 		}else{
 			this.lastStaticMove.y = cursorSpace*position_curve((mouseY-this.y)/(cursorSpace+this.height))
 			this.element.css("top", this.y+this.lastStaticMove.y);
@@ -129,6 +122,9 @@ function TileableManager(obj) {
 	this.element = obj;
 	this.element.data("obj", this);
 
+	this.height = $(obj).height();
+	this.width = $(obj).width();
+
 	this.tiles = [];
 	var e = this;
 
@@ -145,6 +141,7 @@ function TileableManager(obj) {
 				var height = pixel_to_number(t.element.css("height"));
 				if(x<event.clientX && x+width>event.clientX && y<event.clientY && y+height>event.clientY){
 					e.selected = t;
+					e.tiles.splice(i,1);
 					break;
 				}
 				if(i+1 >= e.tiles.length){
@@ -152,6 +149,9 @@ function TileableManager(obj) {
 				}
 			}
 			e.selected.fmove();
+			e.selected.element.detach();
+			$(obj).append(e.selected.element);
+			e.tiles.unshift(e.selected);
 		}
 	}
 	this.tile_deselected = function(event) {
@@ -170,7 +170,20 @@ function TileableManager(obj) {
 			e.selected.y += event.clientY-e.lastStaticMove.y;
 			e.lastStaticMove = {x:event.clientX, y:event.clientY};
 			e.selected.move();
+			var first = true;
+			e.tiles.forEach(function(element){
+				if(first){
+					first = false;
+				}else{
+					element.update(event.clientX, event.clientY);
+				}
+			});
 		}
+	}
+
+	this.window_resize = function(event) {
+		this.height = $(obj).height();
+		this.width = $(obj).width();
 	}
 
 	$(window).on('mousemove', this.tile_update);
