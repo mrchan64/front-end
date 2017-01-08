@@ -1,13 +1,19 @@
+var DEMO = true;
+
 var tileWidth = 100;
 var tileHeight = 100;
 var minMargin = 40;
 var cursorSpace = 10;
 
 var canvas = $("#tileable");
-$(canvas).css({position: 'absolute'});
-$(canvas).addClass("example-manager");
+if(DEMO)tileable_css_example();
 var tileManager = new TileableManager(canvas);
-tile_example();
+if(DEMO)tile_example();
+
+function tileable_css_example() {
+	$(canvas).css({position: 'absolute'});
+	$(canvas).addClass("example-manager");
+}
 
 function block_example() {
 	var block = $("<div></div>");
