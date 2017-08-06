@@ -443,3 +443,46 @@ fieldset[disabled] .btn-default-2a.focus {
   line-height: 1.428571429;
   border-radius: 0px;
 }
+
+.example-sider {
+  position: absolute;
+  width: 0%;
+  height: 100%;
+  top: 0px;
+  right: 0px;
+}
+
+.panel-base {
+  position: absolute;
+  background-color: #555599;
+  /*border-width: 1px;
+  border-right-width: 0px;
+  border-color: #FF0000;
+  border-style: solid;*/
+  right: 0px;
+  overflow: hidden;
+}
+
+.example-music{
+  position: absolute;
+  width: 30px;
+  height: 30px;
+  top: 0px;
+  left: 0px;
+}
+
+.time-pointer{
+  position: absolute;
+  width: 0;
+  top: -4px;
+  border-width: 5px;
+  border-style: solid;
+  border-radius: 5px;
+  border-color: #FFFFFF;
+}
+
+.time-pointer:hover{
+  border-width: 6px;
+  border-radius: 6px;
+  top: -5px;
+}

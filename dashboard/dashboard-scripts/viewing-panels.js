@@ -1,6 +1,8 @@
 var panels = 5;
 var margin = 10;
 var ymultiplier = 5;
+var hovmultiplier = 8;
+var clickmultiplier = 30
 
 var width = $(window).width();
 
@@ -12,6 +14,9 @@ function Icon(){
 }
 
 function Panel(obj, height, posy) {
+	this.ymultiplier = ymultiplier;
+	this.hovmultiplier = hovmultiplier;
+	this.clickmultiplier = clickmultiplier;
 	this.element = obj;
 	this.w = width/80;
 	this.width = this.w;
@@ -20,6 +25,7 @@ function Panel(obj, height, posy) {
 	this.x = width;
 	this.posy = posy;
 	this.y = this.posy
+	this.element.data('obj', this);
 	this.element.css({height: this.height, top: this.y, width: this.width});
 	var radius = height/10;
 	this.element.css("border-top-left-radius", radius);
@@ -54,7 +60,7 @@ function Panel(obj, height, posy) {
 	this.hovered = function(){
 		if(this.cli)return;
 		this.hov = true;
-		this.width = this.w*8;
+		this.width = this.w*this.hovmultiplier;
 		this.element.stop();
 		this.element.animate({width: this.width}, 100);
 	}
@@ -71,11 +77,12 @@ function Panel(obj, height, posy) {
 		this.hov = false;
 		this.cli = true;
 		this.shi = false;
-		this.width = this.w*30;
-		this.height = this.h*ymultiplier;
+		this.width = this.w*this.clickmultiplier;
+		this.height = this.h*this.ymultiplier;
 		this.y = this.posy;
 		this.element.stop();
 		this.element.animate({width: this.width, height: this.height, top: this.y}, 100);
+		this.element.data('state', 'open');
 	}
 
 	this.unclicked = function(){
@@ -84,6 +91,7 @@ function Panel(obj, height, posy) {
 		this.width = this.w;
 		this.height = this.h;
 		this.y = this.posy;
+		this.element.data('state', 'closed');
 		this.element.stop();
 		this.element.animate({width: this.width, height: this.height, top: this.y},100);
 	}
@@ -93,7 +101,8 @@ function Panel(obj, height, posy) {
 		this.shi = true;
 		this.width = this.w;
 		this.height = this.h;
-		this.y = this.posy + this.h*(ymultiplier-1);
+		this.y = this.posy + this.h*(this.ymultiplier-1);
+		this.element.data('state', 'closed');
 		this.element.stop();
 		this.element.animate({width: this.width, height: this.height, top: this.y},100);
 	}
@@ -116,6 +125,11 @@ function PanelManager(obj) {
 		this.panels[this.panels.length]=panel;
 		this.element.append(panel.element);
 		posYindex += height;
+		p.data('state', 'closed');
+		switch(i){
+			case 2:
+			p.attr('id','music-player');
+		}
 	}
 
 	this.onHov = function(event){
